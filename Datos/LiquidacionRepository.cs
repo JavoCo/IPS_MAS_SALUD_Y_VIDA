@@ -50,6 +50,15 @@ namespace Datos
         {
             var liquidacion = new Liquidacion();
             var datos = line.Split(';');
+            liquidacion.IdLiquidacion = datos[0];
+            liquidacion.FechaLiquidacion = Convert.ToDateTime(datos[1]);
+            liquidacion.IdPaciente = datos[2];
+            liquidacion.TipoAfiliacion = datos[3];
+            liquidacion.SalarioDevengado = Convert.ToDouble(datos[4]);
+            liquidacion.ValorHospitalizacion = Convert.ToDouble(datos[5]);
+            liquidacion.Tarifa = Convert.ToDouble(datos[6]);
+            liquidacion.CuotaModeradora = Convert.ToDouble(datos[7]);
+            liquidacion.TopeMax = datos[8];
             return liquidacion;
 
         }
