@@ -39,7 +39,7 @@ namespace Logica
         {
             try
             {
-                var pacienteAeliminar = liquidacionList.FirstOrDefault(p => p.IdPaciente == idAEliminar);
+                var pacienteAeliminar = liquidacionList.FirstOrDefault(p => p.IdLiquidacion == idAEliminar);
 
                 if (pacienteAeliminar != null)
                 {
