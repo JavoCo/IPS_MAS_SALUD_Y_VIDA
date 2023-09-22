@@ -10,6 +10,6 @@ namespace IPS_MAS_SALUD_Y_VIDA
 {
     public class MenuPrincipal
     {
-        
+        //prueba de cambio
     }
 }
