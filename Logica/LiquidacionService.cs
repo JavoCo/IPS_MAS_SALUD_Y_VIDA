@@ -49,7 +49,7 @@ namespace Logica
                 }
                 else
                 {
-                    return "No se encontró un registro con el ID proporcionado.";
+                    return "No se encontró un registro con el ID de la liquidacion proporcionado.";
                 }
             }
             catch (IOException)
