@@ -12,6 +12,14 @@ namespace IPS_MAS_SALUD_Y_VIDA
     {
         static void Main(string[] args)
         {
+            Console.Title = "/tMi Aplicación en Pantalla Completa";
+            Console.WindowHeight = Console.LargestWindowHeight;
+            Console.WindowWidth = Console.LargestWindowWidth;
+            Console.BufferHeight = Console.LargestWindowHeight;
+            Console.BufferWidth = Console.LargestWindowWidth;
+            Liquidacion producto = new Liquidacion();
+            MenuPrincipal menu = new MenuPrincipal(producto);
+            menu.menuPrincipal_();
 
         }
     }

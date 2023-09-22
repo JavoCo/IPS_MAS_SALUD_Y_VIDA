@@ -51,7 +51,7 @@ namespace Datos
             var liquidacion = new Liquidacion();
             var datos = line.Split(';');
             liquidacion.IdLiquidacion = datos[0];
-            liquidacion.FechaLiquidacion = Convert.ToDateTime(datos[1]);
+            liquidacion.FechaLiquidacion = datos[1];
             liquidacion.IdPaciente = datos[2];
             liquidacion.TipoAfiliacion = datos[3];
             liquidacion.SalarioDevengado = Convert.ToDouble(datos[4]);
