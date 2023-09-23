@@ -149,29 +149,35 @@ namespace IPS_MAS_SALUD_Y_VIDA
                 Console.SetCursorPosition(5, 15); Console.WriteLine("ID LIQUIDACIÓN  FECHA LIQUIDACIÓN       ID PACIENTE     TIPO AFILIACIÓN    SALARIO DEVENGADO    VALOR DE HOSPITALIZACIÓN   TARIFA     CUOTA MODERADA   TOPE MÁX");
                 int X = 17;
                 var lista = liquidacionoService.CargarRegistros();
-                foreach (var i in lista)
-                {
-                    Console.SetCursorPosition(5, X); Console.WriteLine(i.IdLiquidacion);
-                    Console.SetCursorPosition(21, X); Console.WriteLine(i.FechaLiquidacion);
-                    Console.SetCursorPosition(46, X); Console.WriteLine(i.IdPaciente  );
-                    Console.SetCursorPosition(68, X); Console.WriteLine(i.TipoAfiliacion);
-                    Console.SetCursorPosition(81, X); Console.WriteLine($"{i.SalarioDevengado:C}");
-                    Console.SetCursorPosition(102, X); Console.WriteLine($"{i.ValorHospitalizacion:C}");
-                    Console.SetCursorPosition(129, X); Console.WriteLine(i.Tarifa.ToString("F1"));
-                    Console.SetCursorPosition(140, X); Console.WriteLine(i.CuotaModeradora.ToString("F1"));
-                    Console.SetCursorPosition(156, X); Console.WriteLine(i.TopeMax);
-                    X++;
+                if(lista != null){
+                    foreach (var i in lista)
+                    {
+                        Console.SetCursorPosition(5, X); Console.WriteLine(i.IdLiquidacion);
+                        Console.SetCursorPosition(21, X); Console.WriteLine(i.FechaLiquidacion);
+                        Console.SetCursorPosition(46, X); Console.WriteLine(i.IdPaciente);
+                        Console.SetCursorPosition(68, X); Console.WriteLine(i.TipoAfiliacion);
+                        Console.SetCursorPosition(81, X); Console.WriteLine($"{i.SalarioDevengado:C}");
+                        Console.SetCursorPosition(102, X); Console.WriteLine($"{i.ValorHospitalizacion:C}");
+                        Console.SetCursorPosition(129, X); Console.WriteLine(i.Tarifa.ToString("F2"));
+                        Console.SetCursorPosition(140, X); Console.WriteLine($"{i.CuotaModeradora:C}");
+                        Console.SetCursorPosition(156, X); Console.WriteLine(i.TopeMax);
+                        X++;
+                    }
+                    Console.SetCursorPosition(70, 14 + X); Console.WriteLine("Presione cualquier tecla para continuar.");
+                    Console.SetCursorPosition(110, 14 + X); Console.ReadKey();
+                    Console.Clear();
                 }
-                Console.SetCursorPosition(40, 14 + X); Console.WriteLine("Presione cualquier tecla para continuar.");
-                Console.SetCursorPosition(80, 14 + X); Console.ReadKey();
-                Console.Clear();
-            }
-            catch (IOException)
-            {
-                Console.SetCursorPosition(108, 20); Console.Write("Ups... Algo pasó");
-                Console.SetCursorPosition(108, 25); Console.WriteLine("No hay registros para mostrar.");
-            }
+                else{
+                    
+                    Console.SetCursorPosition(75, 25); Console.WriteLine("No hay registros para mostrar. ");
+                    Console.SetCursorPosition(105, 25); Console.ReadKey();
+                }
 
+                
+            }catch (IOException)
+            {
+
+            }
         }
 
         public void EliminarRegistro()

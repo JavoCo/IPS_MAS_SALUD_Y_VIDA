@@ -44,78 +44,77 @@ namespace Entidad
                 {
                     Tarifa = 0.15;
                 }
-                else if ((SalarioDevengado == 2320000) && (SalarioDevengado == 5800000))
+                else if ((SalarioDevengado >= 2320000) && (SalarioDevengado < 5800000))
                 {
                     Tarifa = 0.20;
                 }
-                else if (SalarioDevengado > 5800000)
+                else if (SalarioDevengado >= 5800000)
                 {
                     Tarifa = 0.25;
                 }
-            }else if (TipoAfiliacion == "S")
+            }else if (TipoAfiliacion == "S" || CuotaModeradora >= 200000)
             {
-                
-                if (CuotaModeradora > 200000)
-                {
                     Tarifa = 0.05;
-                }
             }
             return Tarifa;
         }
+
         public string tope()
         {
-            if (TipoAfiliacion == "S")
+            if (TipoAfiliacion == "S" || CuotaModeradora >= 200000)
             {
-                if (CuotaModeradora > 200000)
-                {
-                    TopeMax = "Si Aplico";
-                }
-                else
-                {
-                    TopeMax = "No Aplico";
-                }
+                
+                 TopeMax = "Si Aplico";
+                
+            } else 
+            {
+                TopeMax = "No Aplico";
             }
+            
             return TopeMax;
         }
         public double CalculoCuotaModeradora()
         {
             if (TipoAfiliacion == "C")
             {
-                if (SalarioDevengado < 2320000){
-                    Tarifa = tarifa();
-                    CuotaModeradora = ValorHospitalizacion * Tarifa;
-                }else if ((SalarioDevengado == 2320000)&& (SalarioDevengado == 5800000)){
-                    Tarifa = tarifa();
-                    CuotaModeradora = ValorHospitalizacion * Tarifa;
-                }else if (SalarioDevengado > 5800000){
+                if (SalarioDevengado <= 2320000){
                     Tarifa = tarifa();
                     CuotaModeradora = ValorHospitalizacion * Tarifa;
                 }
-                if (CuotaModeradora > 250000)
+                else if ((SalarioDevengado >= 2320000)&&(SalarioDevengado < 5800000)){
+                    Tarifa = tarifa();
+                    CuotaModeradora = ValorHospitalizacion * Tarifa;
+                }else if (SalarioDevengado >= 5800000){
+                    Tarifa = tarifa();
+                    CuotaModeradora = ValorHospitalizacion * Tarifa;
+                }
+
+                if (CuotaModeradora >= 250000 && CuotaModeradora < 900000)
                 {
                     CuotaModeradora = 250000;
                 }
-                else if (CuotaModeradora > 900000)
+                else if (CuotaModeradora >= 900000 && CuotaModeradora <= 1500000 )
                 {
                     CuotaModeradora = 900000;
                 }
-                else if (CuotaModeradora > 1500000)
+                else if (CuotaModeradora >= 1500000)
                 {
                     CuotaModeradora = 1500000;
                 }
             }
             else if (TipoAfiliacion == "S")
             {
-                CuotaModeradora = SalarioDevengado * 0.05;
-                if (CuotaModeradora > 200000)
+                CuotaModeradora = ValorHospitalizacion * 0.05;
+                if (CuotaModeradora >= 200000)
                 {
                     TopeMax = tope();
-                    CuotaModeradora = SalarioDevengado;
-                }
-                else
+                    CuotaModeradora = 200000;
+                }else if (CuotaModeradora < 200000)
                 {
+                    CuotaModeradora = ValorHospitalizacion * 0.05;
                     TopeMax = tope();
                 }
+                
             }
             return CuotaModeradora;
         }
