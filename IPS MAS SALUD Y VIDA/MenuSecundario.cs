@@ -95,12 +95,12 @@ namespace IPS_MAS_SALUD_Y_VIDA
                 double totalCuotasContributivo = registrosContributivo.Sum(i => i.CuotaModeradora);
                 double totalLiquidadoContributivo = registrosContributivo.Sum(i => i.ValorHospitalizacion);
 
-                Console.SetCursorPosition(5, 17); Console.WriteLine("CONTRIBUTIVO          {0:C}                   {1:C}", totalCuotasContributivo, totalLiquidadoContributivo);
+                Console.SetCursorPosition(5, 17); Console.WriteLine("CONTRIBUTIVO          {0:C}                     {1:C}", totalCuotasContributivo, totalLiquidadoContributivo);
                 var registrosSubsidiado = liquidacionoService.CargarRegistros().Where(i => i.TipoAfiliacion == "S").ToList();
                 double totalCuotasSubsidiado = registrosSubsidiado.Sum(i => i.CuotaModeradora);
                 double totalLiquidadoSubsidiado = registrosSubsidiado.Sum(i => i.ValorHospitalizacion);
 
-                Console.SetCursorPosition(5, 18); Console.WriteLine("SUBSIDIADO            {0:C}                     {1:C}", totalCuotasSubsidiado, totalLiquidadoSubsidiado);
+                Console.SetCursorPosition(5, 18); Console.WriteLine("SUBSIDIADO            {0:C}                      {1:C}", totalCuotasSubsidiado, totalLiquidadoSubsidiado);
 
                 Console.SetCursorPosition(70, 20); Console.WriteLine("Presione cualquier tecla para continuar.");
                 Console.SetCursorPosition(110, 20);
@@ -115,107 +115,131 @@ namespace IPS_MAS_SALUD_Y_VIDA
 
         public void ConsultarLiquidacionesPorMesYAnio()
         {
-            titulos2();
-            try
+            char OP = 'S';
+            while (OP == 'S')
             {
-                Console.SetCursorPosition(5, 17); Console.Write("INGRESE EL MES : (1-12)");
-                Console.SetCursorPosition(30, 17); int mes = int.Parse(Console.ReadLine());
-
-                Console.SetCursorPosition(5, 18); Console.Write("INGRESE EL AÑO : (EJEMPLO 2023)");
-                Console.SetCursorPosition(37, 18); int anio = int.Parse(Console.ReadLine());
-
-                var liquidacionesFiltradas = liquidacionoService.CargarRegistros()
-                    .Where(i => i.FechaLiquidacion.Month == mes && i.FechaLiquidacion.Year == anio)
-                    .ToList();
-
-                if (liquidacionesFiltradas.Any())
+                try
                 {
-                    double totalCuotasModeradoras = liquidacionesFiltradas.Sum(i => i.CuotaModeradora);
-                    double totalValoresLiquidados = liquidacionesFiltradas.Sum(i => i.ValorHospitalizacion);
+                    titulos2();
+                    Console.SetCursorPosition(5, 17); Console.Write("INGRESE EL MES : (1-12)");
+                    Console.SetCursorPosition(30, 17); int mes = int.Parse(Console.ReadLine());
 
-                    Console.SetCursorPosition(5, 20); Console.WriteLine("LIQUIDACIONES ENCONTRADAS PARA EL MES {0} DEL AÑO {1}:", mes, anio);
+                    Console.SetCursorPosition(5, 18); Console.Write("INGRESE EL AÑO : (EJEMPLO 2023)");
+                    Console.SetCursorPosition(37, 18); int anio = int.Parse(Console.ReadLine());
 
-                    Console.SetCursorPosition(5, 22); Console.WriteLine("ID LIQUIDACIÓN  FECHA LIQUIDACIÓN       ID PACIENTE     TIPO AFILIACIÓN    SALARIO DEVENGADO    VALOR DE HOSPITALIZACIÓN");
+                    var liquidacionesFiltradas = liquidacionoService.CargarRegistros()
+                        .Where(i => i.FechaLiquidacion.Month == mes && i.FechaLiquidacion.Year == anio)
+                        .ToList();
 
-                    int X = 24;
-                    foreach (var liquidacion in liquidacionesFiltradas)
+                    if (liquidacionesFiltradas.Any())
                     {
-                        Console.SetCursorPosition(5, X); Console.WriteLine($"{liquidacion.IdLiquidacion}");
-                        Console.SetCursorPosition(21, X); Console.WriteLine($"{liquidacion.FechaLiquidacion}");
-                        Console.SetCursorPosition(46, X); Console.WriteLine($"{liquidacion.IdPaciente}");
-                        Console.SetCursorPosition(67, X); Console.WriteLine($"{liquidacion.TipoAfiliacion}");
-                        Console.SetCursorPosition(81, X); Console.WriteLine($"{liquidacion.SalarioDevengado:C}");
-                        Console.SetCursorPosition(102, X); Console.WriteLine($"{liquidacion.ValorHospitalizacion:C}");
-                        X++;
+                        double totalCuotasModeradoras = liquidacionesFiltradas.Sum(i => i.CuotaModeradora);
+                        double totalValoresLiquidados = liquidacionesFiltradas.Sum(i => i.ValorHospitalizacion);
+
+                        Console.SetCursorPosition(5, 20); Console.WriteLine("LIQUIDACIONES ENCONTRADAS PARA EL MES {0} DEL AÑO {1}:", mes, anio);
+
+                        Console.SetCursorPosition(5, 22); Console.WriteLine("ID LIQUIDACIÓN  FECHA LIQUIDACIÓN       ID PACIENTE     TIPO AFILIACIÓN    SALARIO DEVENGADO    VALOR DE HOSPITALIZACIÓN");
+
+                        int X = 24;
+                        foreach (var liquidacion in liquidacionesFiltradas)
+                        {
+                            Console.SetCursorPosition(5, X); Console.WriteLine($"{liquidacion.IdLiquidacion}");
+                            Console.SetCursorPosition(21, X); Console.WriteLine($"{liquidacion.FechaLiquidacion}");
+                            Console.SetCursorPosition(46, X); Console.WriteLine($"{liquidacion.IdPaciente}");
+                            Console.SetCursorPosition(67, X); Console.WriteLine($"{liquidacion.TipoAfiliacion}");
+                            Console.SetCursorPosition(81, X); Console.WriteLine($"{liquidacion.SalarioDevengado:C}");
+                            Console.SetCursorPosition(102, X); Console.WriteLine($"{liquidacion.ValorHospitalizacion:C}");
+                            X++;
+                        }
+
+                        Console.SetCursorPosition(5, X + 1); Console.WriteLine("TOTALES:");
+                        Console.SetCursorPosition(5, X + 2); Console.WriteLine("Total Cuotas Moderadoras: {0:C}", totalCuotasModeradoras);
+                        Console.SetCursorPosition(5, X + 3); Console.WriteLine("Total Valores Liquidados: {0:C}", totalValoresLiquidados);
+                        do
+                        {
+                            Console.SetCursorPosition(70, X + 5); Console.WriteLine("¿Desea continuar? S/N : ");
+                            Console.SetCursorPosition(94, X + 5); OP = Convert.ToChar(Console.ReadLine());
+                            OP = char.ToUpper(OP);
+                            Console.Clear();
+                        } while ((OP != 'S') && (OP != 'N'));
                     }
-
-                    Console.SetCursorPosition(5, X + 1); Console.WriteLine("TOTALES:");
-                    Console.SetCursorPosition(5, X + 2); Console.WriteLine("Total Cuotas Moderadoras: {0:C}", totalCuotasModeradoras);
-                    Console.SetCursorPosition(5, X + 3); Console.WriteLine("Total Valores Liquidados: {0:C}", totalValoresLiquidados);
-
-                    Console.SetCursorPosition(70, X + 5); Console.WriteLine("Presione cualquier tecla para continuar.");
-                    Console.SetCursorPosition(110, X + 5); Console.ReadKey();
-                    Console.Clear();
+                    else
+                    {
+                        int X = 24;
+                        Console.SetCursorPosition(5, 20); Console.WriteLine("No se encontraron liquidaciones para el mes {0} del año {1}.", mes, anio);
+                        do
+                        {
+                            Console.SetCursorPosition(70, X + 5); Console.WriteLine("¿Desea continuar? S/N : ");
+                            Console.SetCursorPosition(94, X + 5); OP = Convert.ToChar(Console.ReadLine());
+                            OP = char.ToUpper(OP);
+                            Console.Clear();
+                        } while ((OP != 'S') && (OP != 'N'));
+                    }
                 }
-                else
+                catch (FormatException)
                 {
-                    Console.SetCursorPosition(5, 20); Console.WriteLine("No se encontraron liquidaciones para el mes {0} del año {1}.", mes, anio);
-                    Console.SetCursorPosition(70, 22); Console.WriteLine("Presione cualquier tecla para continuar.");
-                    Console.SetCursorPosition(110, 22); Console.ReadKey();
-                    Console.Clear();
+                    Console.SetCursorPosition(35, 25); Console.Write("Por favor no deje campos incorrectos");
+                    Console.ReadKey();
                 }
-            }
-            catch (IOException)
-            {
-                // Manejo de excepciones
             }
         }
 
         public void ConsultarLiquidacionPorId()
         {
-            titulos3();
-            try
+            char OP = 'S';
+            while (OP == 'S')
             {
-                Console.SetCursorPosition(5, 17); Console.Write("Ingrese el ID de liquidación que desea buscar: ");
-                Console.SetCursorPosition(52, 17); string idLiquidacionBuscada = Console.ReadLine();
-
-                var liquidacionesFiltradas = liquidacionoService.CargarRegistros()
-                    .Where(i => i.IdLiquidacion == idLiquidacionBuscada)
-                    .ToList();
-
-                if (liquidacionesFiltradas.Any())
+                try
                 {
-                    Console.SetCursorPosition(5, 19); Console.WriteLine("LIQUIDACIONES ENCONTRADAS CON ID {0}:", idLiquidacionBuscada);
+                    titulos3();
+                    Console.SetCursorPosition(5, 17); Console.Write("Ingrese el ID de liquidación que desea buscar: ");
+                    Console.SetCursorPosition(52, 17); string idLiquidacionBuscada = Console.ReadLine();
 
-                    Console.SetCursorPosition(5, 21); Console.WriteLine("ID LIQUIDACIÓN  FECHA LIQUIDACIÓN       ID PACIENTE     TIPO AFILIACIÓN    SALARIO DEVENGADO    VALOR DE HOSPITALIZACIÓN");
+                    var liquidacionesFiltradas = liquidacionoService.CargarRegistros()
+                        .Where(i => i.IdLiquidacion == idLiquidacionBuscada)
+                        .ToList();
 
-                    int X = 23;
-                    foreach (var liquidacion in liquidacionesFiltradas)
+                    if (liquidacionesFiltradas.Any())
                     {
-                        Console.SetCursorPosition(5, X);
-                        Console.WriteLine($"{liquidacion.IdLiquidacion}              {liquidacion.FechaLiquidacion}   {liquidacion.IdPaciente}            {liquidacion.TipoAfiliacion}         {liquidacion.SalarioDevengado:C}                    {liquidacion.ValorHospitalizacion:C}");
-                        X++;
-                    }
+                        Console.SetCursorPosition(5, 19); Console.WriteLine("LIQUIDACIONES ENCONTRADAS CON ID {0}:", idLiquidacionBuscada);
 
-                    Console.SetCursorPosition(70, X + 2); Console.WriteLine("Presione cualquier tecla para continuar.");
-                    Console.SetCursorPosition(110, X + 2); Console.ReadKey();
-                    Console.Clear();
+                        Console.SetCursorPosition(5, 21); Console.WriteLine("ID LIQUIDACIÓN  FECHA LIQUIDACIÓN       ID PACIENTE     TIPO AFILIACIÓN    SALARIO DEVENGADO    VALOR DE HOSPITALIZACIÓN");
+
+                        int X = 23;
+                        foreach (var liquidacion in liquidacionesFiltradas)
+                        {
+                            Console.SetCursorPosition(5, X);
+                            Console.WriteLine($"{liquidacion.IdLiquidacion}              {liquidacion.FechaLiquidacion}   {liquidacion.IdPaciente}            {liquidacion.TipoAfiliacion}         {liquidacion.SalarioDevengado:C}                    {liquidacion.ValorHospitalizacion:C}");
+                            X++;
+                        }
+                        do
+                        {
+                            Console.SetCursorPosition(70, X + 5); Console.WriteLine("¿Desea continuar? S/N : ");
+                            Console.SetCursorPosition(94, X + 5); OP = Convert.ToChar(Console.ReadLine());
+                            OP = char.ToUpper(OP);
+                            Console.Clear();
+                        } while ((OP != 'S') && (OP != 'N'));
+                    }
+                    else
+                    {
+                        int X = 24;
+                        Console.SetCursorPosition(5, 19); Console.WriteLine("No se encontraron liquidaciones con el ID {0}.", idLiquidacionBuscada);
+                        do
+                        {
+                            Console.SetCursorPosition(70, X + 5); Console.WriteLine("¿Desea continuar? S/N : ");
+                            Console.SetCursorPosition(94, X + 5); OP = Convert.ToChar(Console.ReadLine());
+                            OP = char.ToUpper(OP);
+                            Console.Clear();
+                        } while ((OP != 'S') && (OP != 'N'));
+                    }
                 }
-                else
+                catch (FormatException)
                 {
-                    Console.SetCursorPosition(5, 19); Console.WriteLine("No se encontraron liquidaciones con el ID {0}.", idLiquidacionBuscada);
-                    Console.SetCursorPosition(70, 21); Console.WriteLine("Presione cualquier tecla para continuar.");
-                    Console.SetCursorPosition(110, 21); Console.ReadKey();
-                    Console.Clear();
+                    Console.SetCursorPosition(35, 25); Console.Write("Por favor no deje campos incorrectos");
+                    Console.ReadKey();
                 }
-            }
-            catch (IOException)
-            {
-                // Manejo de excepciones
             }
         }
-
-
         public void titulos1()
         {
             Console.SetCursorPosition(75, 6); Console.WriteLine("UNIVERSIDAD POPULAR DEL CESAR");

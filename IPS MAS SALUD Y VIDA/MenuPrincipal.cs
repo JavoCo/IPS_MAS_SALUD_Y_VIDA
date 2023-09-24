@@ -153,16 +153,16 @@ namespace IPS_MAS_SALUD_Y_VIDA
                     {
                         Console.SetCursorPosition(35, 25); Console.WriteLine("Se encontró un registro con el ID de la liquidación proporcionado.");
                     }
-                    {
+                    do{
                         Console.SetCursorPosition(34, 18); Console.WriteLine("¿Desea continuar? S/N : ");
                         Console.SetCursorPosition(58, 18); OP = Convert.ToChar(Console.ReadLine());
                         OP = char.ToUpper(OP);
                         Console.Clear();
                     } while ((OP != 'S') && (OP != 'N')) ;
                 }
-                catch (IOException)
+                catch (FormatException)
                 {
-                    Console.SetCursorPosition(35, 25); Console.Write("Ingresa un dato valido");
+                    Console.SetCursorPosition(35, 25); Console.Write("Por favor no deje campos incorrectos");
                 }
             }
         }
@@ -200,41 +200,54 @@ namespace IPS_MAS_SALUD_Y_VIDA
                 }
             }catch (IOException)
             {
-
             }
         }
 
         public void ModificarRegistro()
         {
-            Console.Clear();
-            titulos2();
-            Console.SetCursorPosition(51, 11); Console.Write("Ingrese el ID de la liquidación que desea modificar: ");
-            Console.SetCursorPosition(103, 11); string idAModificar = Console.ReadLine();
-
-            if (liquidacionoService.ExisteLiquidacion(idAModificar))
+            char OP = 'S';
+            while (OP == 'S')
             {
-                var liquidacionAModificar = liquidacionoService.CargarRegistros().FirstOrDefault(p => p.IdLiquidacion == idAModificar);
+                try
+                {
+                    Console.Clear();
+                    titulos2();
+                    Console.SetCursorPosition(51, 11); Console.Write("Ingrese el ID de la liquidación que desea modificar: ");
+                    Console.SetCursorPosition(104, 11); string idAModificar = Console.ReadLine();
+                    if (liquidacionoService.ExisteLiquidacion(idAModificar))
+                    {
+                        var liquidacionAModificar = liquidacionoService.CargarRegistros().FirstOrDefault(p => p.IdLiquidacion == idAModificar);
 
-                Console.SetCursorPosition(51, 13); Console.Write("NUEVO VALOR DE HOSPITALIZACION : ");
-                Console.SetCursorPosition(87, 13); double nuevoValorHospitalizacion = Convert.ToDouble(Console.ReadLine());
+                        Console.SetCursorPosition(51, 13); Console.Write("NUEVO VALOR DE HOSPITALIZACION : ");
+                        Console.SetCursorPosition(84, 13); double nuevoValorHospitalizacion = Convert.ToDouble(Console.ReadLine());
 
-                liquidacionAModificar.ValorHospitalizacion = nuevoValorHospitalizacion;
-                liquidacionAModificar.CalculoCuotaModeradora();
+                        liquidacionAModificar.ValorHospitalizacion = nuevoValorHospitalizacion;
+                        liquidacionAModificar.CalculoCuotaModeradora();
 
-                string resultado = liquidacionoService.ModificarRegistro(idAModificar, liquidacionAModificar);
+                        string resultado = liquidacionoService.ModificarRegistro(idAModificar, liquidacionAModificar);
 
-                Console.SetCursorPosition(57, 18); Console.WriteLine(resultado);
-                Console.SetCursorPosition(68, 20); Console.WriteLine("Presione Enter para continuar.");
-                Console.SetCursorPosition(99, 20); Console.ReadLine();
-            }
-            else
-            {
-                Console.SetCursorPosition(60, 15); Console.WriteLine("No se encontró un registro con el ID de la liquidación proporcionado.");
-                Console.SetCursorPosition(130, 15); Console.ReadKey();
+                        Console.SetCursorPosition(57, 18); Console.WriteLine(resultado);
+                        do
+                        {
+                            Console.SetCursorPosition(68, 20); Console.WriteLine("¿Desea continuar? S/N : ");
+                            Console.SetCursorPosition(92, 20); OP = Convert.ToChar(Console.ReadLine());
+                            OP = char.ToUpper(OP);
+                            Console.Clear();
+                        } while ((OP != 'S') && (OP != 'N'));
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(60, 15); Console.WriteLine("No se encontró un registro con el ID de la liquidación proporcionado.");
+                        Console.SetCursorPosition(130, 15); Console.ReadKey();
+                    }
+                }
+                catch (FormatException)
+                {
+                    Console.SetCursorPosition(35, 25); Console.Write("Por favor no deje campos incorrectos");
+                    Console.ReadKey();
+                }
             }
         }
-
-
         public void EliminarRegistro()
         {
             Console.Clear();
