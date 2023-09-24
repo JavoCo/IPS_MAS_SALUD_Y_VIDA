@@ -31,6 +31,18 @@ namespace Logica
             liquidacionList = liquidacionRepository.CargarRegistros();
             return message;
         }
+        public bool ExisteLiquidacion(string id)
+        {
+            // Verificar si existe una liquidación con el ID proporcionado
+            var existe = liquidacionList.Any(p => p.IdLiquidacion == id);
+            return existe;
+        }
+
+        public bool ExisteIdLiquidacion(string idLiquidacion)
+        {
+            return liquidacionList.Any(liquidacion => liquidacion.IdLiquidacion == idLiquidacion);
+        }
+
         public List<Liquidacion> CargarRegistros()
         {
             return liquidacionList;
@@ -57,5 +69,33 @@ namespace Logica
                 return "Ocurrió un error al intentar eliminar el registro.";
             }
         }
+
+        public string ModificarRegistro(string idAModificar, Liquidacion nuevaLiquidacion)
+        {
+            try
+            {
+                var liquidacionAModificar = liquidacionList.FirstOrDefault(p => p.IdLiquidacion == idAModificar);
+
+                if (liquidacionAModificar != null)
+                {
+                    // Copiar todas las propiedades de nuevaLiquidacion en liquidacionAModificar
+                    liquidacionAModificar.ValorHospitalizacion = nuevaLiquidacion.ValorHospitalizacion;
+                    // ...
+
+                    liquidacionRepository.Guardar(liquidacionList);
+                    return "Registro modificado con éxito.";
+                }
+                else
+                {
+                    return "No se encontró un registro con el ID de la liquidación proporcionado.";
+                }
+            }
+            catch (IOException)
+            {
+                return "Ocurrió un error al intentar modificar el registro.";
+            }
+        }
+
+        
     }
 }

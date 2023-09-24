@@ -9,7 +9,7 @@ namespace Entidad
     public class Liquidacion
     {
         public string IdLiquidacion { get; set; }
-        public string FechaLiquidacion { get; set; }
+        public DateTime FechaLiquidacion { get; set; }
         public string IdPaciente { get; set; }
         public string TipoAfiliacion { get; set; }
         public double SalarioDevengado { get; set; }
@@ -18,7 +18,7 @@ namespace Entidad
         public double CuotaModeradora { get; set; }
         public string TopeMax { get; set; }
 
-        public Liquidacion(string idLiquidacion, string fechaLiquidacion, string idPaciente, string tipoAfiliacion, double salarioDevengado,
+        public Liquidacion(string idLiquidacion, DateTime fechaLiquidacion, string idPaciente, string tipoAfiliacion, double salarioDevengado,
             double valorHospitalizacion, double tarifa, double cuotaModeradora, string topeMax)
         {
             this.IdLiquidacion = idLiquidacion;

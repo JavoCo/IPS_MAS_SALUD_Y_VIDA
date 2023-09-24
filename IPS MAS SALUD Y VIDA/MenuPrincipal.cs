@@ -28,23 +28,25 @@ namespace IPS_MAS_SALUD_Y_VIDA
             Console.SetCursorPosition(76, 9); Console.WriteLine("M E N U  P R I N C I P A L");
             Console.SetCursorPosition(75, 13); Console.WriteLine("1. REGISTRO DE PACIENTES");
             Console.SetCursorPosition(75, 14); Console.WriteLine("2. CONSULTA TOTAL DE PACIENTES");
-            Console.SetCursorPosition(75, 15); Console.WriteLine("3. ELIMINAR PACIENTE");
-            Console.SetCursorPosition(75, 18); Console.WriteLine("4. SALIR");
+            Console.SetCursorPosition(75, 15); Console.WriteLine("3. CONSULTA POR FILTRO");
+            Console.SetCursorPosition(75, 16); Console.WriteLine("4. ACTUALIZACION DE DATOS");
+            Console.SetCursorPosition(75, 17); Console.WriteLine("5. ELIMINAR PACIENTE");
+            Console.SetCursorPosition(75, 20); Console.WriteLine("6. SALIR");
             do
             {
-                Console.SetCursorPosition(75, 21); Console.WriteLine("Seleccione una opcion: ");
-                Console.SetCursorPosition(98, 21); OPC = Convert.ToInt32(Console.ReadLine());
-                Console.SetCursorPosition(98, 21); Console.WriteLine("         ");
-                Console.SetCursorPosition(98, 26); Console.WriteLine("Opcion no valida");
-            } while ((OPC < 1) || (OPC > 4));
-            Console.SetCursorPosition(98, 21); Console.WriteLine("                                     ");
-            Console.SetCursorPosition(98, 26); Console.WriteLine("                                     ");
+                Console.SetCursorPosition(75, 25); Console.WriteLine("Seleccione una opcion: ");
+                Console.SetCursorPosition(98, 25); OPC = Convert.ToInt32(Console.ReadLine());
+                Console.SetCursorPosition(98, 25); Console.WriteLine("         ");
+                Console.SetCursorPosition(98, 29); Console.WriteLine("Opcion no valida");
+            } while ((OPC < 1) || (OPC > 6));
+            Console.SetCursorPosition(98, 25); Console.WriteLine("                                     ");
+            Console.SetCursorPosition(98, 29); Console.WriteLine("                                     ");
             return OPC;
         }
 
         public void menuPrincipal_()
         {
-
+            MenuSecundario secundario = new MenuSecundario(liquidacion);
             int MENU_;
             char OP = 'S';
             while (OP == 'S')
@@ -64,10 +66,20 @@ namespace IPS_MAS_SALUD_Y_VIDA
                         break;
                     case 3:
                         Console.Clear();
-                        EliminarRegistro();
+                        secundario.menuPrincipal_();
                         Console.Clear();
                         break;
                     case 4:
+                        Console.Clear();
+                        ModificarRegistro();
+                        Console.Clear();
+                        break;
+                    case 5:
+                        Console.Clear();
+                        EliminarRegistro();
+                        Console.Clear();
+                        break;
+                    case 6:
                         OP = 'N';
                         break;
                 }
@@ -77,14 +89,14 @@ namespace IPS_MAS_SALUD_Y_VIDA
         public void registro()
         {
             string IdLiquidacion;
-            string Fecha;
+            DateTime Fecha;
             string IdPaciente;
             string TipoAfiliacion;
             double SalarioDevengado;
             double ValorHospitalizacion;
-          
 
-        char OP = 'S';
+
+            char OP = 'S';
             while (OP == 'S')
             {
                 try
@@ -96,37 +108,42 @@ namespace IPS_MAS_SALUD_Y_VIDA
                     Console.SetCursorPosition(35, 14); Console.WriteLine("TIPO DE AFILIACIÓN       : ");
                     Console.SetCursorPosition(35, 15); Console.WriteLine("SALARIO DEVENGADO        : ");
                     Console.SetCursorPosition(35, 16); Console.WriteLine("VALOR DE HOSPITALIZACIÓN : ");
-
                     Console.SetCursorPosition(63, 11); IdLiquidacion = Console.ReadLine();
-                    Console.SetCursorPosition(63, 12); Fecha = Console.ReadLine();
-
-                    Console.SetCursorPosition(63, 13); IdPaciente = Console.ReadLine().ToUpper();
-
-                    do
+                    if (!liquidacionoService.ExisteIdLiquidacion(IdLiquidacion))
                     {
-                        Console.SetCursorPosition(35, 25); Console.WriteLine("Digite S: Subsidiado o Digite C: Contributivo");
-                        Console.SetCursorPosition(63, 14); TipoAfiliacion = Console.ReadLine().ToUpper();
-                        
-                    } while ((TipoAfiliacion != "S") && (TipoAfiliacion != "C"));
-                    Console.SetCursorPosition(35, 25); Console.WriteLine("                                                         ");
-                    do
-                    {
-                        Console.SetCursorPosition(63, 15); SalarioDevengado = Convert.ToDouble(Console.ReadLine());
-                    } while (SalarioDevengado < 0);
-                    do
-                    {
-                        Console.SetCursorPosition(63, 16); ValorHospitalizacion = Convert.ToDouble(Console.ReadLine());
-                    } while (ValorHospitalizacion < 0);
-                   
-                    
+                        Console.SetCursorPosition(63, 12); Fecha = Convert.ToDateTime(Console.ReadLine());
+                        Console.SetCursorPosition(63, 13); IdPaciente = Console.ReadLine().ToUpper();
 
-                    Liquidacion liquidacion = new Liquidacion(IdLiquidacion,Fecha, IdPaciente, TipoAfiliacion, SalarioDevengado, ValorHospitalizacion,0,0,"");
+                        do
+                        {
+                            Console.SetCursorPosition(35, 25); Console.WriteLine("Digite S: Subsidiado o Digite C: Contributivo");
+                            Console.SetCursorPosition(63, 14); TipoAfiliacion = Console.ReadLine().ToUpper();
 
-                    
-                    liquidacion.tarifa();
-                    liquidacion.CalculoCuotaModeradora();
-                    liquidacion.tope();
-                    Console.SetCursorPosition(34, 25); Console.WriteLine(liquidacionoService.GuardarRegistros(liquidacion));
+                        } while ((TipoAfiliacion != "S") && (TipoAfiliacion != "C"));
+                        Console.SetCursorPosition(35, 25); Console.WriteLine("                                                         ");
+                        do
+                        {
+                            Console.SetCursorPosition(63, 15); SalarioDevengado = Convert.ToDouble(Console.ReadLine());
+                        } while (SalarioDevengado < 0);
+                        do
+                        {
+                            Console.SetCursorPosition(63, 16); ValorHospitalizacion = Convert.ToDouble(Console.ReadLine());
+                        } while (ValorHospitalizacion < 0);
+
+
+
+                        Liquidacion liquidacion = new Liquidacion(IdLiquidacion, Fecha, IdPaciente, TipoAfiliacion, SalarioDevengado, ValorHospitalizacion, 0, 0, "");
+
+
+                        liquidacion.tarifa();
+                        liquidacion.CalculoCuotaModeradora();
+                        liquidacion.tope();
+                        Console.SetCursorPosition(34, 25); Console.WriteLine(liquidacionoService.GuardarRegistros(liquidacion));
+                    }
+                    else
+                    {
+                        Console.SetCursorPosition(35, 25); Console.WriteLine("Se encontró un registro con el ID de la liquidación proporcionado.");
+                    }
                     {
                         Console.SetCursorPosition(34, 18); Console.WriteLine("¿Desea continuar? S/N : ");
                         Console.SetCursorPosition(58, 18); OP = Convert.ToChar(Console.ReadLine());
@@ -172,19 +189,57 @@ namespace IPS_MAS_SALUD_Y_VIDA
                     Console.SetCursorPosition(75, 25); Console.WriteLine("No hay registros para mostrar. ");
                     Console.SetCursorPosition(105, 25); Console.ReadKey();
                 }
-
-                
             }catch (IOException)
             {
 
             }
         }
 
+        public void ModificarRegistro()
+        {
+            Console.Clear();
+            titulos2();
+            Console.SetCursorPosition(51, 11); Console.Write("Ingrese el ID de la liquidación que desea modificar: ");
+            Console.SetCursorPosition(103, 11); string idAModificar = Console.ReadLine();
+
+            if (liquidacionoService.ExisteLiquidacion(idAModificar))
+            {
+                var liquidacionAModificar = liquidacionoService.CargarRegistros().FirstOrDefault(p => p.IdLiquidacion == idAModificar);
+
+                Console.SetCursorPosition(51, 13); Console.Write("NUEVO VALOR DE HOSPITALIZACION : ");
+                Console.SetCursorPosition(87, 13); double nuevoValorHospitalizacion = Convert.ToDouble(Console.ReadLine());
+
+                liquidacionAModificar.ValorHospitalizacion = nuevoValorHospitalizacion;
+                liquidacionAModificar.CalculoCuotaModeradora();
+
+                string resultado = liquidacionoService.ModificarRegistro(idAModificar, liquidacionAModificar);
+
+                Console.SetCursorPosition(57, 18); Console.WriteLine(resultado);
+                Console.SetCursorPosition(68, 20); Console.WriteLine("Presione Enter para continuar.");
+                Console.SetCursorPosition(99, 20); Console.ReadLine();
+            }
+            else
+            {
+                Console.SetCursorPosition(60, 15); Console.WriteLine("No se encontró un registro con el ID de la liquidación proporcionado.");
+                Console.SetCursorPosition(130, 15); Console.ReadKey();
+            }
+        }
+
+
         public void EliminarRegistro()
         {
+            Console.Clear();
+            titulos2();
+            Console.SetCursorPosition(51, 11); Console.Write("Ingrese el ID de liquidación que desea eliminar: ");
+            Console.SetCursorPosition(99, 11); string idAEliminar = Console.ReadLine();
 
+            string mensaje = liquidacionoService.EliminarRegistro(idAEliminar);
 
+            Console.SetCursorPosition(57, 18); Console.WriteLine(mensaje);
+            Console.SetCursorPosition(68, 20); Console.WriteLine("Presione Enter para continuar.");
+            Console.SetCursorPosition(99, 20); Console.ReadLine();
         }
+
         public void titulos1()
         {
             Console.SetCursorPosition(75, 6); Console.WriteLine("UNIVERSIDAD POPULAR DEL CESAR");
@@ -194,10 +249,10 @@ namespace IPS_MAS_SALUD_Y_VIDA
         }
         public void titulos2()
         {
-            Console.SetCursorPosition(115, 6); Console.WriteLine("UNIVERSIDAD POPULAR DEL CESAR");
-            Console.SetCursorPosition(116, 7); Console.WriteLine("TALLER DE PROGRAMACION III");
-            Console.SetCursorPosition(108, 8); Console.WriteLine("SOFTWARE DE LIQUIDACIÓN IPS MAS SALUD Y VIDA");
-            Console.SetCursorPosition(119, 9); Console.WriteLine("E L I M I N A C I O N");
+            Console.SetCursorPosition(75, 6); Console.WriteLine("UNIVERSIDAD POPULAR DEL CESAR");
+            Console.SetCursorPosition(77, 7); Console.WriteLine("TALLER DE PROGRAMACION III");
+            Console.SetCursorPosition(68, 8); Console.WriteLine("SOFTWARE DE LIQUIDACIÓN IPS MAS SALUD Y VIDA");
+            Console.SetCursorPosition(80, 9); Console.WriteLine("M O D I F I C A R");
         }
         public void titulos4()
         {
