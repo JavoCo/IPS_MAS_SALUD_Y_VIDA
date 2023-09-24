@@ -19,26 +19,33 @@ namespace IPS_MAS_SALUD_Y_VIDA
         }
         public int menuPrincipal()
         {
-            int OPC;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.SetCursorPosition(75, 6); Console.WriteLine("UNIVERSIDAD POPULAR DEL CESAR");
-            Console.SetCursorPosition(77, 7); Console.WriteLine("TALLER DE PROGRAMACION III");
-            Console.SetCursorPosition(68, 8); Console.WriteLine("SOFTWARE DE LIQUIDACIÓN IPS MAS SALUD Y VIDA");
-            Console.SetCursorPosition(76, 9); Console.WriteLine("M E N U  S E C U N D A R I O");
-            Console.SetCursorPosition(75, 13); Console.WriteLine("1. FILTRO POR TIPO DE REGIMEN");
-            Console.SetCursorPosition(75, 14); Console.WriteLine("2. VALOR TOTAL DE LIQUIDACIONES");
-            Console.SetCursorPosition(75, 15); Console.WriteLine("3. FILTRO DE LIQUIDACION POR TIEMPO");
-            Console.SetCursorPosition(75, 16); Console.WriteLine("4. CONSULTA SELECTIVA");
-            Console.SetCursorPosition(75, 20); Console.WriteLine("5. SALIR DEL MENU SECUNDARIO");
-            do
+            int OPC = 0;
+            try
             {
-                Console.SetCursorPosition(75, 22); Console.WriteLine("Seleccione una opcion: ");
-                Console.SetCursorPosition(98, 22); OPC = Convert.ToInt32(Console.ReadLine());
-                Console.SetCursorPosition(98, 22); Console.WriteLine("         ");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.SetCursorPosition(75, 6); Console.WriteLine("UNIVERSIDAD POPULAR DEL CESAR");
+                Console.SetCursorPosition(77, 7); Console.WriteLine("TALLER DE PROGRAMACION III");
+                Console.SetCursorPosition(68, 8); Console.WriteLine("SOFTWARE DE LIQUIDACIÓN IPS MAS SALUD Y VIDA");
+                Console.SetCursorPosition(76, 9); Console.WriteLine("M E N U  S E C U N D A R I O");
+                Console.SetCursorPosition(75, 13); Console.WriteLine("1. FILTRO POR TIPO DE REGIMEN");
+                Console.SetCursorPosition(75, 14); Console.WriteLine("2. VALOR TOTAL DE LIQUIDACIONES");
+                Console.SetCursorPosition(75, 15); Console.WriteLine("3. FILTRO DE LIQUIDACION POR TIEMPO");
+                Console.SetCursorPosition(75, 16); Console.WriteLine("4. CONSULTA SELECTIVA");
+                Console.SetCursorPosition(75, 20); Console.WriteLine("5. SALIR DEL MENU SECUNDARIO");
+                do
+                {
+                    Console.SetCursorPosition(75, 22); Console.WriteLine("Seleccione una opcion: ");
+                    Console.SetCursorPosition(98, 22); OPC = Convert.ToInt32(Console.ReadLine());
+                    Console.SetCursorPosition(98, 22); Console.WriteLine("         ");
+                    Console.SetCursorPosition(98, 26); Console.WriteLine("Opcion no valida");
+                } while ((OPC < 1) || (OPC > 5));
+                Console.SetCursorPosition(98, 22); Console.WriteLine("                                     ");
+                Console.SetCursorPosition(98, 26); Console.WriteLine("                                     ");
+            }
+            catch (FormatException)
+            {
                 Console.SetCursorPosition(98, 26); Console.WriteLine("Opcion no valida");
-            } while ((OPC < 1) || (OPC > 5));
-            Console.SetCursorPosition(98, 22); Console.WriteLine("                                     ");
-            Console.SetCursorPosition(98, 26); Console.WriteLine("                                     ");
+            }
             return OPC;
         }
 
