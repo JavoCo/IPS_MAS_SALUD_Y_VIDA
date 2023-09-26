@@ -104,7 +104,6 @@ namespace IPS_MAS_SALUD_Y_VIDA
             double SalarioDevengado;
             double ValorHospitalizacion;
 
-
             char OP = 'S';
             while (OP == 'S')
             {
@@ -120,9 +119,10 @@ namespace IPS_MAS_SALUD_Y_VIDA
                     Console.SetCursorPosition(63, 11); IdLiquidacion = Console.ReadLine();
                     if (!liquidacionoService.ExisteIdLiquidacion(IdLiquidacion))
                     {
+                        Console.SetCursorPosition(35, 25); Console.WriteLine("Formato correcto de fecha y hora: DD/MM/YY 00:00:00");
                         Console.SetCursorPosition(63, 12); Fecha = Convert.ToDateTime(Console.ReadLine());
+                        Console.SetCursorPosition(35, 25); Console.WriteLine("                                                           ");
                         Console.SetCursorPosition(63, 13); IdPaciente = Console.ReadLine().ToUpper();
-
                         do
                         {
                             Console.SetCursorPosition(35, 25); Console.WriteLine("Digite S: Subsidiado o Digite C: Contributivo");
@@ -132,18 +132,15 @@ namespace IPS_MAS_SALUD_Y_VIDA
                         Console.SetCursorPosition(35, 25); Console.WriteLine("                                                         ");
                         do
                         {
+                            Console.SetCursorPosition(35, 25); Console.WriteLine("Recuerde que si el tipo de regimen es subsidiado el sal Devengado es $ 0");
                             Console.SetCursorPosition(63, 15); SalarioDevengado = Convert.ToDouble(Console.ReadLine());
                         } while (SalarioDevengado < 0);
+                        Console.SetCursorPosition(35, 25); Console.WriteLine("                                                                             ");
                         do
                         {
                             Console.SetCursorPosition(63, 16); ValorHospitalizacion = Convert.ToDouble(Console.ReadLine());
                         } while (ValorHospitalizacion < 0);
-
-
-
                         Liquidacion liquidacion = new Liquidacion(IdLiquidacion, Fecha, IdPaciente, TipoAfiliacion, SalarioDevengado, ValorHospitalizacion, 0, 0, "");
-
-
                         liquidacion.tarifa();
                         liquidacion.CalculoCuotaModeradora();
                         liquidacion.tope();
@@ -153,12 +150,13 @@ namespace IPS_MAS_SALUD_Y_VIDA
                     {
                         Console.SetCursorPosition(35, 25); Console.WriteLine("Se encontró un registro con el ID de la liquidación proporcionado.");
                     }
-                    do{
+                    do
+                    {
                         Console.SetCursorPosition(34, 18); Console.WriteLine("¿Desea continuar? S/N : ");
                         Console.SetCursorPosition(58, 18); OP = Convert.ToChar(Console.ReadLine());
                         OP = char.ToUpper(OP);
                         Console.Clear();
-                    } while ((OP != 'S') && (OP != 'N')) ;
+                    } while ((OP != 'S') && (OP != 'N'));
                 }
                 catch (FormatException)
                 {
